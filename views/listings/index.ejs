@@ -1,19 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index Route</title>
-</head>
+<% layout("/layouts/boilerplate.ejs") %>
 <body>
-    <h3>All Listings</h3>
-    <form action="/listings/new" method="GET">
+  <h3>All Listings</h3>
+  <!-- <form action="/listings/new" method="GET">
         <button>Create New Listing</button>
-    </form>
-    <ul>
+    </form> -->
+
+  <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
+    <!-- "used bootstrap search this currently i have understaned but check again" class row automatically convert colums to row  -->
+    <% for(let listings of allListings) { %>
+    <a href="/listings/<%= listings._id %>" class="listing-link">
+      <div class="card col">
+        <img
+          src="<%= listings.image %>"
+          class="card-img-top"
+          alt="listings_img"
+          style="height: 20rem"
+        />
+        <div class="card-img-overlay"></div>
+        <div class="card-body">
+          <p class="card-text">
+            <b> <%= listings.title %> <br /> </b>
+            &#8377;<%= listings.price.toLocaleString("en-IN") %> 
+          </p>
+        </div>
+      </div>
+      <% } %>
+    </a>
+  </div>
+
+  <!-- <ul>
         <% for (let listings of allListings){ %>
             <li> <a href="/listings/<%= listings._id %>"><%= listings.title %>  </a>  </li>
         <%} %>
-    </ul>
+    </ul> -->
 </body>
-</html>
