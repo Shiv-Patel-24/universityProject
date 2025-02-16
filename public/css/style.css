@@ -1,5 +1,12 @@
 boyd{
     font-family: "Plus Jakarta Sans", serif !important;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container{
+    flex: 1;
 }
 
 /* Navbar */
@@ -87,4 +94,30 @@ boyd{
 .card-img-overlay:hover{
     opacity: 0.2;
     background-color: white;
+}
+
+/* New page style */
+.add-btn{
+    background-color: #fe424d  !important;
+    border: none !important;
+}
+
+/* Edit Page */
+.edit-btn{
+    background-color: #fe424d  !important;
+    border: none !important;
+}
+
+/* Show page */
+.show-img{
+    height: 30vh;
+}
+
+.btns{
+    display: flex;
+}
+
+.show-card{
+    padding-left: 0;
+    padding-right: 0;
 }

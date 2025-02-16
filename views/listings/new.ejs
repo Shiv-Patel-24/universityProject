@@ -1,5 +1,7 @@
 <% layout("/layouts/boilerplate.ejs") %>
-<body>
+
+<!-- for CRUD opeation i used this  -->
+<!-- <body>
     <h3>Create a new listing</h3>
     <form action="/listings" method="POST">
         <input type="text" placeholder="enter title" name="listing[title]">
@@ -16,4 +18,82 @@
         <br><br>
         <button>Add </button>
     </form>
-</body>
+</body> -->
+
+<!-- I am using bootstrap for style also, used seveal class only  -->
+
+<div class="row">
+  <div class="col-8 offset-2">
+    <br><br>
+    <h3>Create a New Listing</h3>
+
+    <form action="/listings" method="POST">
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input
+          type="text"
+          placeholder="Add a title"
+          name="listing[title]"
+          class="form-control"
+        />
+      </div>     <!-- In placeholder : "Add a catchy title" -->
+
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea
+          type="text"
+          placeholder="enter description"
+          name="listing[description]"
+          class="form-control"
+        >
+        </textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="image" class="form-label">Image Link</label>
+        <input
+          type="text"
+          placeholder="enter image URL"
+          name="listing[image]"
+          class="form-control"
+        />
+      </div>
+
+      <div class="row">
+        <div class="mb-3 col-md-4">
+          <label for="price" class="form-label">Price</label>
+          <input
+            type="number"
+            placeholder="1200"
+            name="listing[price]"
+            class="form-control"
+          />
+        </div>
+
+        <div class="mb-3 col-md-8">
+          <label for="country" class="form-label">Country</label>
+          <input
+            type="text"
+            placeholder="India"
+            name="listing[country]"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="location" class="form-label">Location</label>
+        <input
+          type="text"
+          placeholder="Vadodara, Gujarat"
+          name="listing[location]"
+          class="form-control"
+        />
+      </div>
+
+      <br><br>
+      <button class="btn btn-dark add-btn">Add</button>
+      <br><br>
+    </form>
+  </div>
+</div>
