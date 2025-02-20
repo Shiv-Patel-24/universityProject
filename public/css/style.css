@@ -110,7 +110,7 @@ boyd{
 
 /* Show page */
 .show-img{
-    height: 30vh;
+    height: 45vh;
 }
 
 .btns{
@@ -120,4 +120,15 @@ boyd{
 .show-card{
     padding-left: 0;
     padding-right: 0;
+    /* float: right; */
 }
+
+.giving-height{
+    height: 5vh;
+}
+
+.img-fluid{
+    border-radius: 2vh;
+    max-width: 75% !important;
+}
+
