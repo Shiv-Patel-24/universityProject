@@ -5,6 +5,7 @@ const path = require("path")
 const Listing = require("./models/listing.js");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate")
+const wrapAsync = require("./utils/wrapAsync.js")
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engin", "ejs");
@@ -48,7 +49,7 @@ app.get("/listings/:id", async(req, res) =>{
 })
 
 // Create Route
-app.post("/listings", async(req, res) =>{
+app.post("/listings", wrapAsync(async(req, res, next) =>{
     // First method 
     // let { title, description, image, price, country, location } = req.body;  // extracting all the variable form the "NEW.EJS" file
     
@@ -56,8 +57,8 @@ app.post("/listings", async(req, res) =>{
     //second method in new.ejs we can write ' name = "listeing[title]"' like others
     const newListing = new Listing(req.body.listing);  //instanse create new Listing
     await newListing.save();
-    res.redirect("/listings");
-})
+    res.redirect("/listings"); 
+}))
 
 // Edit Route
 app.get("/listings/:id/edit", async(req, res) =>{
@@ -97,7 +98,10 @@ app.delete("/listings/:id", async(req, res) =>{
 // });
 
 
-
+// Error Handing code
+app.use((err, req, res, next) =>{
+    res.send("Something went wrong");
+})
 
 app.listen(8080, () =>{
     console.log("server is working on 8080")
