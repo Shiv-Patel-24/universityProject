@@ -47,17 +47,32 @@
     <div class="giving-height">
 
     </div>
-    <hr class="col-9 offset-1"><br>
-    <div class="col-6 offset-3">
-      <form action="">
-        <label for="review" class="form-control mb-3">Review</label>
-        <input type="range" class="form-label col-10" min="1" max="5" step="1" id="review"><br>
-
-        <textarea name="comment" class=" col-6 form-control" id="comment" rows="5" cols="15" placeholder="comment here"></textarea>
-        <br>
-        <button class="btn btn-dark">Submit</button>
+    
+    <!-- <h3>Listing Details</h3> -->
+    <!-- <h3><%= listing.title %></h3>' -->
+    
+    <div class="col-8 offset-3 mb-3">
+      <hr>
+      <h4>Leave a Review</h4>
+      <form action="/listings<%= listing.id%>/reviews" method="POST">
+        <div class="mb-3 mt-3">
+          <label for="rating" class="form-label">Rating</label>
+          <input type="range" min="1" max="5" id="rating" name="review[rating]" class="form-range">
+        </div>
+        <div class="mb-3 mt-3">
+          <label for="comment" class="form-label">Comments</label>
+          <textarea name="review[comment]" class="form-control" id="comment" cols="30" rows="5"></textarea>  
+        <div class="invalid-feedback">Please add some comments for review</div>
+        </div>
+        <button class="btn btn-outline-dark">Submit</button>
+        <hr>
+        <h4>All Reviews</h4>
+        <ul>
+          <% for (review of listing.reviews) { %>
+              <li><%= review.comment%>, <%= review.rating %>Stars</li>
+          <% } %>
+        </ul>
       </form>
-      <br>
     </div>
 
 </div>

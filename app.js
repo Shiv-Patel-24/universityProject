@@ -7,7 +7,12 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate")
 const wrapAsync = require("./utils/wrapAsync.js")
 const ExpressError = require("./utils/ExpressError.js");
-const { listingSchema } = require("./schema.js")
+const { listingSchema , reviewSchema} = require("./schema.js")
+const session = require("express-session");
+const flash = require("connect-flash")
+
+const listings = require("./routes/listings.js")
+const reviews = require("./routes/reviews.js")
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engin", "ejs");
@@ -28,71 +33,32 @@ async function main() {
     await mongoose.connect(MONGO_URL);
 }
 
+const sessionOption = {
+    secret : "mysupersecretcode",
+    resave : false,
+    saveUninitialized : true,
+    cookie :{
+        expires : Date.now() + 7 * 24 * 60 * 60 * 1000,
+        maxAge : 7 * 24 * 60 * 60 * 1000,
+        httpOnly : true
+    }
+}
+
+app.use(session(sessionOption))
+app.use(flash())
+
+app.use((req, res, next) =>{
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+    next();
+})
+
 app.get("/", (req, res) =>{
     res.send("This is a root node");
 })
 
-const validateListing = (req, res, next) =>{
-    let { error } = listingSchema.validate(req.body);
-    if(error){
-        throw new ExpressError(400, result.error);
-    }else{
-        next();
-    }
-};
-
-// Index Route
-app.get("/listings", wrapAsync(async(req, res) =>{
-    const allListings = await Listing.find({});
-    res.render("listings/index.ejs", {allListings});
-}));
-
-//New Route
-app.get("/listings/new", (req, res) =>{
-    res.render("listings/new.ejs")
-})
-
-// Show Route
-app.get("/listings/:id", wrapAsync(async(req, res) =>{
-    let { id } = req.params;
-    const listing = await Listing.findById(id);
-    res.render("listings/show.ejs", {listing})
-}));
-
-// Create Route
-app.post("/listings", validateListing, wrapAsync(async(req, res, next) =>{
-    // First method 
-    // let { title, description, image, price, country, location } = req.body;  // extracting all the variable form the "NEW.EJS" file
-    
-    //second method in new.ejs we can write ' name = "listeing[title]"' like others
-    const newListing = new Listing(req.body.listing);  //instanse create new Listing
-    await newListing.save();
-    res.redirect("/listings"); 
-}))
-
-// Edit Route
-app.get("/listings/:id/edit", wrapAsync(async(req, res) =>{
-    let { id } = req.params;   //extracting the ID // also did "extended : true" in staring 
-    const listing = await Listing.findById(id);
-    res.render("listings/edit.ejs", {listing});
-}));
-
-// Update Route
-app.put("/listings/:id", validateListing, wrapAsync(async(req, res) =>{
-    let { id } = req.params;    //extract the ID
-    await Listing.findByIdAndUpdate(id, {...req.body.listing})  //...deconstract the JS object, after that divide one by one
-    // res.redirect("/listings")  I can use this one also but this is directly redirect to the listing page 
-    res.redirect(`/listings/${id}`);  //This is directly redirect to the show.ejs page. or maybe edit.ejs page. Let me check 
-}));
-
-// Delete Route
-app.delete("/listings/:id", wrapAsync(async(req, res) =>{
-    let { id } = req.params;
-    let deletedListing = await Listing.findByIdAndDelete(id);
-    console.log(deletedListing);
-    res.redirect("/listings");
-}));
-
+app.use("/listings", listings)
+app.use("/listings/:id/reviews", reviews)
 
 // app.get("/testListing", async(req, res) =>{
 //     let sampleListing = new Listing ({
